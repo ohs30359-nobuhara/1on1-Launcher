@@ -34,9 +34,7 @@ const MemberProfile: React.FC<MemberProfileProps> = (props) => {
             <span className="text-muted">Last 1on1 was {calculateDaysAgo(props.last1on1Date)} days ago</span>
           </div>
         </div>
-        <Button variant="outline-primary" className="ml-3">
-          Start 1on1
-        </Button>
+        <Button variant="outline-primary" className="ml-3">詳細</Button>
       </div>
     </Card>
   )
