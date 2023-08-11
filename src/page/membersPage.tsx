@@ -40,7 +40,7 @@ const MemberProfile: React.FC<MemberProfileProps> = (props) => {
   )
 }
 
-const Members: React.FC = () => {
+const MembersPage: React.FC = () => {
   const memberStatus: MemberProfileProps[] = [
     {name: "suzuki", last1on1Date: "2022/11/01", assignDate: "2023/08/03"},
     {name: "tanaka", last1on1Date: "2023/01/01", assignDate: "2023/08/01"},
@@ -55,4 +55,4 @@ const Members: React.FC = () => {
   );
 };
 
-export default Members;
+export default MembersPage;
