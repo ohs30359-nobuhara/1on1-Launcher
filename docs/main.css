@@ -1,3 +1,33 @@
 body {
     background-color: #efefef;
 }
+
+.textarea-toolbox {
+    border: 1px solid #d7d6d6;
+    padding-left: 10px;
+}
+
+.textarea-toolbox-item {
+    font-size: 20px;
+    color: black;
+}
+
+
+.overture {
+    display: grid;
+    grid-template-columns: repeat(3, 150px); /* Adjust the width as needed */
+    grid-template-rows: repeat(3, 150px); /* Adjust the height as needed */
+    justify-content: center; /* 中央寄せ */
+    align-content: center; /* 中央寄せ */
+    gap: 5px; /* Adjust the gap between squares as needed */
+    text-align: center; /* Center-align text */
+}
+
+.overture-item {
+    background-color: #ccc;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

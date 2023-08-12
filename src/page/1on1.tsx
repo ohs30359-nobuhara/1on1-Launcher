@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button, ListGroup, CloseButton, InputGroup, Card } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, ListGroup, CloseButton, InputGroup, ButtonToolbar } from 'react-bootstrap';
+import {BsLightbulb} from "react-icons/bs";
+import {CiStickyNote} from "react-icons/ci";
+import {ContentsModal} from "../component/modal";
+import {Overture} from "../component/overture";
 
 const OneOnOnePage: React.FC = () => {
   const [previousNotes, setPreviousNotes] = useState<string>('');
   const [currentMeeting, setCurrentMeeting] = useState<string>('');
   const [nextAction, setNextAction] = useState<string>('');
   const [nextActionsList, setNextActionsList] = useState<string[]>([]);
+  const [overtureModalShow, setOvertureModalShow] = React.useState(false);
+  const [backlogModalShow, setBacklogModalShow] = React.useState(false);
 
   const handleSave = () => {
     // 保存処理をここに実装する
@@ -26,31 +32,31 @@ const OneOnOnePage: React.FC = () => {
 
   return (
     <Container className="my-4">
-      <Row>
+      <Row className="mt-1">
         <Col>
-          <div className="previous-notes">
-            <h2>前回の内容</h2>
-            <Card>
-              <Card.Body>{previousNotes}</Card.Body>
-            </Card>
+          <h3>議事録</h3>
+          <div className="textarea-toolbox">
+            <ButtonToolbar>
+              <Button variant="link" className="mr-3" onClick={() => setOvertureModalShow(true)}>
+                <BsLightbulb className="menu-icon textarea-toolbox-item"/>
+              </Button>
+              <Button variant="link" onClick={() => setBacklogModalShow(true)}>
+                <CiStickyNote className="menu-icon textarea-toolbox-item"/>
+              </Button>
+              {/* 他の編集ツールのボタンを追加 */}
+            </ButtonToolbar>
           </div>
-        </Col>
-      </Row>
-      <Row className="mt-5">
-        <Col>
-          <div className="current-meeting">
-            <h2>議事録</h2>
-            <Form>
-              <Form.Group controlId="currentMeeting">
-                <Form.Control
-                  as="textarea"
-                  rows={8}
-                  value={currentMeeting}
-                  onChange={(e) => setCurrentMeeting(e.target.value)}
-                />
-              </Form.Group>
-            </Form>
-          </div>
+          <Form>
+            <Form.Group controlId="currentMeeting">
+              <Form.Control
+                as="textarea"
+                rows={8}
+                value={currentMeeting}
+                onChange={(e) => setCurrentMeeting(e.target.value)}
+                style={{ borderTopLeftRadius: '0', borderTopRightRadius: '0' }}
+              />
+            </Form.Group>
+          </Form>
         </Col>
       </Row>
       <Row className="mt-5">
@@ -70,7 +76,7 @@ const OneOnOnePage: React.FC = () => {
           </div>
         </Col>
       </Row>
-      <Row className="mt-5">
+      <Row className="mt-2">
         <Col>
           <div className="next-action-list">
             <ListGroup>
@@ -84,13 +90,32 @@ const OneOnOnePage: React.FC = () => {
           </div>
         </Col>
       </Row>
-      <Row className="mt-2">
+      <Row className="mt-4">
         <Col>
-          <Button variant="primary" onClick={handleSave} className="save-button">
-            保存
-          </Button>
+          <div className="d-grid gap-2">
+            <Button variant="primary" onClick={handleSave} className="save-button">
+              保存する
+            </Button>
+          </div>
         </Col>
       </Row>
+
+      <ContentsModal
+        show={overtureModalShow}
+        onHide={() => setOvertureModalShow(false)}
+        title={"話したい議題を選んでください"}
+      >
+        <Overture />
+      </ContentsModal>
+
+      <ContentsModal
+        show={backlogModalShow}
+        onHide={() => setBacklogModalShow(false)}
+        title={"前回の1on1"}
+      >
+        <div></div>
+      </ContentsModal>
+
     </Container>
   );
 };
