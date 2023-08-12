@@ -1,9 +1,6 @@
-import React, {ReactNode, useEffect, useState} from 'react';
+import React, {JSX, ReactNode, useEffect, useState} from 'react';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
-import { RiTeamLine } from 'react-icons/ri';
-import { GiTalk } from 'react-icons/gi';
-import { TbNotes } from 'react-icons/tb';
-import { BsCheckCircle } from 'react-icons/bs';
+import {pageManager, PageOption} from "../pageManager";
 
 const MainMenu: React.FC = () => {
   const [menuHeight, setMenuHeight] = useState<number>(window.innerHeight);
@@ -12,6 +9,7 @@ const MainMenu: React.FC = () => {
     setMenuHeight(window.innerHeight);
   };
 
+  // メニューの高さをリサイズに合わせてbrowserの高さに揃える
   useEffect(() => {
     window.addEventListener('resize', updateMenuHeight);
     return () => {
@@ -35,29 +33,28 @@ const MainMenu: React.FC = () => {
 
   return (
     <div style={menuContainerStyle}>
-       <Nav defaultActiveKey="/home" className="flex-column">
-        <Nav.Link eventKey="link" className="d-flex align-items-center" style={fontStyle}>
-          <RiTeamLine className="menu-icon" />
-          <span className="ml-2" style={spanStyle}>Members</span>
-        </Nav.Link>
-        <Nav.Link eventKey="link" className="d-flex align-items-center" style={fontStyle}>
-          <GiTalk className="menu-icon" />
-          <span className="ml-2" style={spanStyle}>1on1</span>
-        </Nav.Link>
-        <Nav.Link eventKey="link" className="d-flex align-items-center" style={fontStyle}>
-          <TbNotes className="menu-icon" />
-          <span className="ml-2" style={spanStyle}>Backlog</span>
-        </Nav.Link>
-        <Nav.Link eventKey="link" className="d-flex align-items-center" style={fontStyle}>
-          <BsCheckCircle className="menu-icon" />
-          <span className="ml-2" style={spanStyle}>Action Items</span>
-        </Nav.Link>
+       <Nav className="flex-column">
+         {
+           pageManager.getPage().map(page => {
+             return (
+               <Nav.Link eventKey="link" className="d-flex align-items-center" style={fontStyle} onClick={() => pageManager.change(page.key)}>
+                 {page.menuIcon}
+                 <span className="ml-2" style={spanStyle}>{page.menuTitle}</span>
+               </Nav.Link>
+             )
+           })
+         }
       </Nav>
     </div>
   );
 };
 
-export const MainTemplate: React.FC<{ children: ReactNode }> = (props) => {
+export const MainTemplate: React.FC<{ pages: PageOption[] }> = (props) => {
+  const [page, setPage] = useState<JSX.Element | null>(null);
+
+  // ページマネージャーにページ一覧と更新用のメソッドを登録
+  pageManager.setOption(props.pages, (page) => setPage(page.component))
+
   return (
     <Container fluid className="p-0">
       <Row>
@@ -65,7 +62,7 @@ export const MainTemplate: React.FC<{ children: ReactNode }> = (props) => {
           <MainMenu/>
         </Col>
         <Col sm={9} className="p-4">
-          {props.children}
+          {page}
         </Col>
       </Row>
     </Container>
