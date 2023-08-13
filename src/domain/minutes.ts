@@ -1,7 +1,12 @@
 import {write} from "../utils/file";
 import {formatDate} from "../utils/dateformat";
 
-export class Minutes {
+export interface MinutesInterface {
+  readonly date: string
+  readonly body: string
+}
+
+export class Minutes implements MinutesInterface {
   constructor(readonly date: string, readonly body: string) {
   }
 

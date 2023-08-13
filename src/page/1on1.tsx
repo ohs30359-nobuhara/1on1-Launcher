@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button, ListGroup, CloseButton, InputGroup, ButtonToolbar } from 'react-bootstrap';
+import React, {useState} from 'react';
+import {Button, ButtonToolbar, CloseButton, Col, Container, Form, InputGroup, ListGroup, Row} from 'react-bootstrap';
 import {BsLightbulb} from "react-icons/bs";
 import {CiStickyNote} from "react-icons/ci";
 import {ContentsModal} from "../component/modal";
 import {Overture} from "../component/overture";
+import {IpcEventKey} from "../enum";
+import {SaveMinutesEvent} from "../events/saveMinutes";
 
 const OneOnOnePage: React.FC = () => {
   const [previousNotes, setPreviousNotes] = useState<string>('');
@@ -14,6 +16,11 @@ const OneOnOnePage: React.FC = () => {
   const [backlogModalShow, setBacklogModalShow] = React.useState(false);
 
   const handleSave = () => {
+    const payload: SaveMinutesEvent = {
+      params: currentMeeting,
+      key: IpcEventKey.SaveMinutes
+    }
+    window.electron.send('ipcEvent', payload);
   };
 
   const handleAddNextAction = () => {

@@ -1,5 +1,7 @@
 import * as path from 'path';
-import {BrowserWindow, app} from "electron"
+import {BrowserWindow, app, ipcMain} from "electron"
+import {IpcEventInterface, ipcEventListener} from "./events/event";
+import "./events/index"
 
 let mainWindow: BrowserWindow | null;
 
@@ -33,4 +35,10 @@ app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+ipcMain.handle('ipcEvent', (event, data) => {
+  console.log('Received SaveMinutes message:', data);
+  const payload: IpcEventInterface<any> = data as IpcEventInterface<any>;
+  ipcEventListener.on(payload);
 });
