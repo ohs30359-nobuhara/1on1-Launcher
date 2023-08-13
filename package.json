@@ -4,8 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "webpack",
-    "build-electron": "webpack --config webpack.electron.config.js"
+    "build-browser": "webpack --config=./webpack.browser.config.js && cp ./public/* dist",
+    "build-electron": "webpack --config webpack.electron.config.js",
+    "build": "npm run build-browser && npm run build-electron"
   },
   "devDependencies": {
     "@types/electron": "^1.6.10",
