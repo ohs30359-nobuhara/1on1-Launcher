@@ -18,7 +18,13 @@ module.exports = {
         // 拡張子 .ts もしくは .tsx の場合
         test: /\.tsx?$/,
         // TypeScript をコンパイルする
-        use: "ts-loader",
+        use: {
+          loader: "ts-loader",
+          options: {
+            transpileOnly: true,
+            configFile: "tsconfig.browser.json",
+          }
+        },
       },
     ],
   },

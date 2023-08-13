@@ -4,9 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "build-electron": "webpack --config webpack.electron.config.js"
   },
   "devDependencies": {
+    "@types/electron": "^1.6.10",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "ts-loader": "^9.4.4",
@@ -16,6 +18,9 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.1",
+    "electron": "^25.5.0",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",

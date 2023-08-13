@@ -14,8 +14,6 @@ const OneOnOnePage: React.FC = () => {
   const [backlogModalShow, setBacklogModalShow] = React.useState(false);
 
   const handleSave = () => {
-    // 保存処理をここに実装する
-    // データの保存、更新、ファイルの保存など
   };
 
   const handleAddNextAction = () => {
@@ -62,7 +60,7 @@ const OneOnOnePage: React.FC = () => {
       <Row className="mt-5">
         <Col>
           <div className="next-action">
-            <h2>Next Action</h2>
+            <h2>アクションアイテム</h2>
             <Form>
               <InputGroup className="mb-3">
                 <Form.Control
