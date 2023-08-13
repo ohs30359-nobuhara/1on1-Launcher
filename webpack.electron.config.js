@@ -2,10 +2,13 @@ const path = require('path');
 
 module.exports = {
   mode: "production",
-  entry: './src/electron.ts',
+  entry: {
+    electron: "./src/electron.ts",
+    preload: "./src/preload.ts"
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'electron.js',
+    filename: '[name].js',
   },
   target: 'electron-main',
   node: {

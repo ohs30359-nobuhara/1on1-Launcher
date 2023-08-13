@@ -14,6 +14,8 @@ async function createWindow() {
     },
   });
 
+  mainWindow.webContents.openDevTools()
+
   await mainWindow.loadFile(path.join(__dirname, 'index.html'));
 }
 
