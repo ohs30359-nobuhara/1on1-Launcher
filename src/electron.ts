@@ -1,6 +1,6 @@
 import * as path from 'path';
 import {BrowserWindow, app, ipcMain} from "electron"
-import {IpcEventInterface, ipcEventListener} from "./events/event";
+import {IpcEventInterface, ipcEventListener} from "./core/event";
 import "./events/index"
 
 let mainWindow: BrowserWindow | null;
@@ -38,7 +38,15 @@ app.on('window-all-closed', function () {
 });
 
 ipcMain.handle('ipcEvent', (event, data) => {
-  console.log('Received SaveMinutes message:', data);
+  console.debug('Received SaveMinutes message:', data);
   const payload: IpcEventInterface<any> = data as IpcEventInterface<any>;
-  ipcEventListener.on(payload);
+  const replay: any = ipcEventListener.on(payload);
+
+  // returnがないなら何もbrowser側に返さない
+  if (!replay) {
+    return;
+  }
+
+  console.log("replay", replay);
+  return replay;
 });

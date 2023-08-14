@@ -1,8 +1,9 @@
 import {contextBridge, ipcMain, ipcRenderer} from 'electron';
 import {IpcEventKey} from "./enum";
-
-console.log("load preload")
+import {IpcEventInterface} from "./core/event";
 
 contextBridge.exposeInMainWorld('electron', {
-  send: (_, args) => ipcRenderer.invoke("ipcEvent", args)
+  send: async (_, args: IpcEventInterface<any>) => {
+    return await ipcRenderer.invoke("ipcEvent", args).catch(e => console.error(e));
+  }
 })

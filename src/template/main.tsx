@@ -1,4 +1,4 @@
-import React, {JSX, ReactNode, useEffect, useState} from 'react';
+import React, {JSX, useEffect, useState} from 'react';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
 import {pageManager, PageOption} from "../pageManager";
 
@@ -35,11 +35,11 @@ const MainMenu: React.FC = () => {
     <div style={menuContainerStyle}>
        <Nav className="flex-column">
          {
-           pageManager.getPage().map(page => {
+           pageManager.getPage().filter(page => page.menu).map(page => {
              return (
                <Nav.Link eventKey="link" className="d-flex align-items-center" style={fontStyle} onClick={() => pageManager.change(page.key)}>
-                 {page.menuIcon}
-                 <span className="ml-2" style={spanStyle}>{page.menuTitle}</span>
+                 {page.menu.menuIcon}
+                 <span className="ml-2" style={spanStyle}>{page.menu.menuTitle}</span>
                </Nav.Link>
              )
            })
@@ -51,18 +51,22 @@ const MainMenu: React.FC = () => {
 
 export const MainTemplate: React.FC<{ pages: PageOption[] }> = (props) => {
   const [page, setPage] = useState<JSX.Element | null>(null);
+  const [pageProps, setPageProps] = useState({});
 
   // ページマネージャーにページ一覧と更新用のメソッドを登録
-  pageManager.setOption(props.pages, (page) => setPage(page.component))
+  pageManager.setOption(props.pages, (page, pageOption) => {
+      setPage(page);
+      setPageProps(pageOption);
+  });
 
   return (
     <Container fluid className="p-0">
       <Row>
-        <Col sm={3} style={{paddingTop: 30, backgroundColor: "#343A40", maxWidth: "250px"}}>
+        <Col sm={3} className={"mainMenu"}>
           <MainMenu/>
         </Col>
-        <Col sm={9} className="p-4">
-          {page}
+        <Col sm={9} className="p-4 mainContents">
+          {page && React.cloneElement(page, {...pageProps})}
         </Col>
       </Row>
     </Container>

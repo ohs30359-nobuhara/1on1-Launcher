@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, ButtonToolbar, CloseButton, Col, Container, Form, InputGroup, ListGroup, Row} from 'react-bootstrap';
 import {BsLightbulb} from "react-icons/bs";
 import {CiStickyNote} from "react-icons/ci";
@@ -6,21 +6,30 @@ import {ContentsModal} from "../component/modal";
 import {Overture} from "../component/overture";
 import {IpcEventKey} from "../enum";
 import {SaveMinutesEvent} from "../events/saveMinutes";
+import {eventEmitter} from "../core/eventEmitter";
+import {MemberInterface} from "../domain/member";
+import {LoadMembersEvent} from "../events/loadMembers";
+import {Timer} from "../component/timer";
 
 const OneOnOnePage: React.FC = () => {
-  const [previousNotes, setPreviousNotes] = useState<string>('');
+  const [member, setMember] = useState<string>('');
+  const [members, setMembers] = useState<MemberInterface[]>([]);
   const [currentMeeting, setCurrentMeeting] = useState<string>('');
   const [nextAction, setNextAction] = useState<string>('');
   const [nextActionsList, setNextActionsList] = useState<string[]>([]);
   const [overtureModalShow, setOvertureModalShow] = React.useState(false);
   const [backlogModalShow, setBacklogModalShow] = React.useState(false);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const payload: SaveMinutesEvent = {
-      params: currentMeeting,
+      params: {
+        body: currentMeeting,
+        account: member
+      },
       key: IpcEventKey.SaveMinutes
     }
-    window.electron.send('ipcEvent', payload);
+    const resp: boolean = await eventEmitter<boolean>(payload);
+    console.log(resp);
   };
 
   const handleAddNextAction = () => {
@@ -35,12 +44,37 @@ const OneOnOnePage: React.FC = () => {
     setNextActionsList(updatedActions);
   };
 
+  useEffect(() => {
+    (async () => {
+      const event: LoadMembersEvent = {
+        key: IpcEventKey.LoadMembers,
+        params: null
+      }
+      const members: MemberInterface[] = await eventEmitter(event);
+      setMembers(members);
+
+      // 変更されないケースを考慮
+      setMember(members[0].account);
+    })();
+  }, [])
+
   return (
     <Container className="my-4">
       <Row className="mt-1">
         <Col>
           <h3>議事録</h3>
-          <div className="textarea-toolbox">
+          <Form.Control as="select"
+                        value={member}
+                        onChange={(e) => { setMember(e.target.value) }}>
+
+            {members.map((option) => (
+              <option key={option.account} value={option.account}>
+                {option.account}
+              </option>
+            ))}
+          </Form.Control>
+
+          <div className="textarea-toolbox mt-3">
             <ButtonToolbar>
               <Button variant="link" className="mr-3" onClick={() => setOvertureModalShow(true)}>
                 <BsLightbulb className="menu-icon textarea-toolbox-item"/>
@@ -104,6 +138,8 @@ const OneOnOnePage: React.FC = () => {
           </div>
         </Col>
       </Row>
+
+      <Timer></Timer>
 
       <ContentsModal
         show={overtureModalShow}

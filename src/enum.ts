@@ -1,9 +1,15 @@
 export enum Enum {
   OneOnOne,
   Backlog,
-  Members
+  Members,
+  AddMember,
+  Minutes
 }
 
 export enum IpcEventKey {
-  SaveMinutes = "SaveMinutes"
+  LoadMinutesIndex= "LoadMinutesIndex",
+  LoadMinutes= "LoadMinutes",
+  SaveMinutes = "SaveMinutes",
+  LoadMembers= "LoadMembers",
+  SaveMember = "SaveMember"
 }

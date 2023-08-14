@@ -2,6 +2,19 @@ body {
     background-color: #efefef;
 }
 
+.mainMenu {
+    padding-top: 30px;
+    background-color: #343A40;
+    max-width: 250px;
+    position: sticky;
+    top: 0
+}
+
+.mainContents {
+    overflow-y: auto;
+    max-height: calc(100vh - 60px);
+}
+
 .textarea-toolbox {
     border: 1px solid #d7d6d6;
     padding-left: 10px;
@@ -30,4 +43,32 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* Timer Component */
+.timer-container {
+    display: flex;
+    position: fixed;
+    right: 30px;
+    background-color: #343A40;
+    color: white;
+    width: 230px;
+    bottom: 10px;
+    border-radius: 20px;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    border: 1px solid #000;
+}
+
+.time-display {
+    font-size: 30px;
+    margin-bottom: 5px;
+    margin-right: 15px;
+}
+
+.button-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }

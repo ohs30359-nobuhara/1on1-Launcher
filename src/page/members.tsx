@@ -1,5 +1,9 @@
-import React from 'react';
-import { Card, Button, Container } from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {Button, Card, Container} from 'react-bootstrap';
+import {eventEmitter} from "../core/eventEmitter";
+import {LoadMembersEvent} from "../events/loadMembers";
+import {IpcEventKey} from "../enum";
+import {MemberInterface} from "../domain/member";
 
 interface MemberProfileProps {
   name: string
@@ -41,15 +45,24 @@ const MemberProfile: React.FC<MemberProfileProps> = (props) => {
 }
 
 const Members: React.FC = () => {
-  const memberStatus: MemberProfileProps[] = [
-    {name: "suzuki", last1on1Date: "2022/11/01", assignDate: "2023/08/03"},
-    {name: "tanaka", last1on1Date: "2023/01/01", assignDate: "2023/08/01"},
-  ]
+  const [members, setMembers] = useState<MemberInterface[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const event: LoadMembersEvent = {
+        key: IpcEventKey.LoadMembers,
+        params: null
+      }
+
+      const members: MemberInterface[] = await eventEmitter(event)
+      setMembers(members);
+    })();
+  }, [])
 
   return (
     <Container>
-      { memberStatus.map((m, i) =>
-        (<MemberProfile key={i} name={m.name} assignDate={m.assignDate} last1on1Date={m.last1on1Date} />))
+      { members.map((m, i) =>
+        (<MemberProfile key={i} name={m.account} assignDate={"---"} last1on1Date={"---"} />))
       }
     </Container>
   );

@@ -6,29 +6,50 @@ import Members from "./page/members";
 import {BacklogPage} from "./page/backlog";
 import {PageOption} from "./pageManager";
 import {Enum} from "./enum";
-import { RiTeamLine } from 'react-icons/ri';
-import { GiTalk } from 'react-icons/gi';
-import { TbNotes } from 'react-icons/tb';
+import {RiTeamLine} from 'react-icons/ri';
+import {GiTalk} from 'react-icons/gi';
+import {TbNotes} from 'react-icons/tb';
+import {AiOutlinePlusCircle} from "react-icons/ai";
+import {AddMember} from "./page/addMember";
+import {MinutesPage} from "./page/minutes";
 
 
 const pages: PageOption[] = [
   {
-    menuIcon: (<RiTeamLine className="menu-icon" />),
-    menuTitle: "Members",
     component: (<Members/>),
-    key: Enum.Members
+    key: Enum.Members,
+    menu: {
+      menuIcon: (<RiTeamLine className="menu-icon" />),
+      menuTitle: "Members",
+    }
   },
   {
-    menuIcon: (<GiTalk className="menu-icon" />),
-    menuTitle: "1on1",
     component: (<OneOnOnePage/>),
-    key: Enum.OneOnOne
+    key: Enum.OneOnOne,
+    menu: {
+      menuIcon: (<GiTalk className="menu-icon" />),
+      menuTitle: "1on1",
+    }
   },
   {
-    menuIcon: (<TbNotes className="menu-icon" />),
-    menuTitle: "Backlog",
     component: (<BacklogPage/>),
-    key: Enum.Backlog
+    key: Enum.Backlog,
+    menu: {
+      menuIcon: (<TbNotes className="menu-icon" />),
+      menuTitle: "Backlog",
+    }
+  },
+  {
+    component: (<AddMember/>),
+    key: Enum.AddMember,
+    menu: {
+      menuIcon: (<AiOutlinePlusCircle className="menu-icon" />),
+      menuTitle: "Add Member",
+    }
+  },
+  {
+    component: (<MinutesPage/>),
+    key: Enum.Minutes,
   }
 ]
 
