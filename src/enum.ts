@@ -1,9 +1,12 @@
+import {PersonnelPage} from "./page/personnelPage";
+
 export enum Enum {
   OneOnOne,
   Backlog,
   Members,
   AddMember,
-  Minutes
+  Minutes,
+  Personnel
 }
 
 export enum IpcEventKey {

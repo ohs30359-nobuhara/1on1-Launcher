@@ -1,0 +1,26 @@
+{
+  "skill": {
+    "management": 1,
+    "problemSolving": 1,
+    "communication": 1,
+    "job": 1
+  },
+  "priority": {
+    "skillImprovement": 1,
+    "financialStability": 1,
+    "workLifeBalance": 1,
+    "engagementAndFulfillment": 1,
+    "socialContribution": 1,
+    "popularity": 1
+  },
+  "memo": "",
+  "development": {
+    "guidelines": "",
+    "strong": "",
+    "weak": ""
+  },
+  "intention": {
+    "wantToDo": "",
+    "career": "",
+  }
+}

@@ -10,8 +10,9 @@ import {RiTeamLine} from 'react-icons/ri';
 import {GiTalk} from 'react-icons/gi';
 import {TbNotes} from 'react-icons/tb';
 import {AiOutlinePlusCircle} from "react-icons/ai";
-import {AddMember} from "./page/addMember";
+import {EditMember} from "./page/editMember";
 import {MinutesPage} from "./page/minutes";
+import {PersonnelPage} from "./page/personnelPage";
 
 
 const pages: PageOption[] = [
@@ -40,7 +41,7 @@ const pages: PageOption[] = [
     }
   },
   {
-    component: (<AddMember/>),
+    component: (<EditMember/>),
     key: Enum.AddMember,
     menu: {
       menuIcon: (<AiOutlinePlusCircle className="menu-icon" />),
@@ -50,6 +51,10 @@ const pages: PageOption[] = [
   {
     component: (<MinutesPage/>),
     key: Enum.Minutes,
+  },
+  {
+    component: (<PersonnelPage/>),
+    key: Enum.Personnel
   }
 ]
 

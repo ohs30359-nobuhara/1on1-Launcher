@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Button, Card, Container} from 'react-bootstrap';
 import {eventEmitter} from "../core/eventEmitter";
 import {LoadMembersEvent} from "../events/loadMembers";
-import {IpcEventKey} from "../enum";
+import {Enum, IpcEventKey} from "../enum";
 import {MemberInterface} from "../domain/member";
+import {pageManager} from "../pageManager";
 
 interface MemberProfileProps {
   name: string
@@ -38,7 +39,7 @@ const MemberProfile: React.FC<MemberProfileProps> = (props) => {
             <span className="text-muted">Last 1on1 was {calculateDaysAgo(props.last1on1Date)} days ago</span>
           </div>
         </div>
-        <Button variant="outline-primary" className="ml-3">詳細</Button>
+        <Button variant="outline-primary" className="ml-3" onClick={() => pageManager.change(Enum.Personnel)}>詳細</Button>
       </div>
     </Card>
   )
