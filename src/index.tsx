@@ -12,7 +12,7 @@ import {TbNotes} from 'react-icons/tb';
 import {AiOutlinePlusCircle} from "react-icons/ai";
 import {EditMember} from "./page/editMember";
 import {MinutesPage} from "./page/minutes";
-import {PersonnelPage} from "./page/personnelPage";
+import {Personnel} from "./page/personnel";
 
 
 const pages: PageOption[] = [
@@ -42,7 +42,7 @@ const pages: PageOption[] = [
   },
   {
     component: (<EditMember/>),
-    key: Enum.AddMember,
+    key: Enum.EditMember,
     menu: {
       menuIcon: (<AiOutlinePlusCircle className="menu-icon" />),
       menuTitle: "Add Member",
@@ -53,7 +53,7 @@ const pages: PageOption[] = [
     key: Enum.Minutes,
   },
   {
-    component: (<PersonnelPage/>),
+    component: (<Personnel/>),
     key: Enum.Personnel
   }
 ]

@@ -2,7 +2,7 @@ import React from "react";
 import {ReaderChart, RadarChartProps} from "../component/radarChart";
 import {Card, Col, Container, Row} from "react-bootstrap";
 
-export const PersonnelPage: React.FC = () => {
+export const Personnel: React.FC = () => {
   const skillLevel: RadarChartProps = {
     values: {
       management: {

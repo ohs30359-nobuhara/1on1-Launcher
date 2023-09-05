@@ -1,10 +1,8 @@
-import {PersonnelPage} from "./page/personnelPage";
-
 export enum Enum {
   OneOnOne,
   Backlog,
   Members,
-  AddMember,
+  EditMember,
   Minutes,
   Personnel
 }

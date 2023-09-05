@@ -5,6 +5,7 @@ import {LoadMembersEvent} from "../events/loadMembers";
 import {Enum, IpcEventKey} from "../enum";
 import {MemberInterface} from "../domain/member";
 import {pageManager} from "../pageManager";
+import {EditMemberProps} from "./editMember";
 
 interface MemberProfileProps {
   name: string
@@ -40,6 +41,7 @@ const MemberProfile: React.FC<MemberProfileProps> = (props) => {
           </div>
         </div>
         <Button variant="outline-primary" className="ml-3" onClick={() => pageManager.change(Enum.Personnel)}>詳細</Button>
+        <Button variant="outline-primary" className="ml-3" style={{marginLeft: "15px"}} onClick={() => pageManager.change<EditMemberProps>(Enum.EditMember)}>編集</Button>
       </div>
     </Card>
   )

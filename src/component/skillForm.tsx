@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {CSSProperties, useState} from 'react';
 import { Tab, Tabs, Table, Form } from 'react-bootstrap';
 
 const skillData = {
@@ -69,10 +69,11 @@ export interface SkillFormProps {
   communication: number,
   problemSolving: number,
   jobSkill: number
+  handleOnChange(management: number, communication: number, problemSolving: number, jobSkill: number): void
 }
 
 export const SkillForm: React.FC<SkillFormProps> = (props) => {
-  const [levels, setLevels] = useState({
+  const [selectedLevels, setSelectedLevels] = useState({
     management: props.management || 0,
     communication: props.communication || 0,
     problemSolving: props.problemSolving || 0,
@@ -80,11 +81,17 @@ export const SkillForm: React.FC<SkillFormProps> = (props) => {
   });
 
   const handleLevelChange = (key, value) => {
-    setLevels({
-      ...levels,
+    setSelectedLevels({
+      ...selectedLevels,
       [key]: value,
     });
+    props.handleOnChange(selectedLevels.management, selectedLevels.communication, selectedLevels.problemSolving, selectedLevels.jobSkill);
   };
+
+  const selectedStyle: CSSProperties = {
+    border: "5px solid #5aa9f6",
+    cursor: "pointer"
+  }
 
   return (
     <Tabs defaultActiveKey="management" id="skills-tabs">
@@ -99,30 +106,17 @@ export const SkillForm: React.FC<SkillFormProps> = (props) => {
             </thead>
             <tbody>
             {Object.keys(skillData[key]).map((level) => (
-              <tr key={level}>
+              <tr
+                key={level}
+                onClick={() => handleLevelChange(key, level)} // 行がクリックされたら選択されたレベルを更新
+                style={selectedLevels[key] === level? selectedStyle : null} // 選択されたレベルに応じたスタイルを追加
+              >
                 <td>{level}</td>
                 <td>{insertLineBreaks(skillData[key][level])}</td>
               </tr>
             ))}
             </tbody>
           </Table>
-
-          <Form>
-            <Form.Group key={key}>
-              <Form.Control
-                as="select"
-                value={levels[key]}
-                onChange={(event) => handleLevelChange(key, event.target.value)}
-              >
-                {Object.keys(skillData[key]).map((level) => (
-                  <option key={level} value={level}>
-                    Level {level}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-          </Form>
-
         </Tab>
       ))}
     </Tabs>
