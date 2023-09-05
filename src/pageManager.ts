@@ -1,16 +1,18 @@
 import {JSX} from "react";
-import {PageKey} from "./pageKey";
+import {Enum} from "./enum";
 
 export interface PageOption {
-  menuIcon: JSX.Element,
-  menuTitle: string,
   component: JSX.Element
-  key: PageKey
+  key: Enum
+  menu?: {
+    menuIcon: JSX.Element,
+    menuTitle: string,
+  }
 }
 
 class PageManager {
-  private pages: Map<PageKey, PageOption>
-  private changeHandler: (page: PageOption) => void
+  private pages: Map<Enum, PageOption>
+  private changeHandler: (page: JSX.Element, props: any) => void
 
   constructor() {
     this.pages = new Map();
@@ -18,19 +20,19 @@ class PageManager {
   }
 
 
-  setOption(pages: Array<PageOption>, changeHandler: (page: PageOption) => void): void {
+  setOption(pages: Array<PageOption>, changeHandler: (page: JSX.Element, props: any) => void): void {
     pages.forEach(p => this.pages.set(p.key, p));
     this.changeHandler = changeHandler
   }
 
-  change(key: PageKey): void {
+  change<T=any>(key: Enum, props?: T): void {
     const op: PageOption | undefined = this.pages.get(key);
 
     if (!op) {
       console.error(`${key} is not found`);
       return;
     }
-    this.changeHandler(op);
+    this.changeHandler(op.component, props || null);
   }
 
   getPage(): PageOption[] {

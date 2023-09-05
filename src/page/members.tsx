@@ -1,5 +1,11 @@
-import React from 'react';
-import { Card, Button, Container } from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {Button, Card, Container} from 'react-bootstrap';
+import {eventEmitter} from "../core/eventEmitter";
+import {LoadMembersEvent} from "../events/loadMembers";
+import {Enum, IpcEventKey} from "../enum";
+import {MemberInterface} from "../domain/member";
+import {pageManager} from "../pageManager";
+import {EditMemberProps} from "./editMember";
 
 interface MemberProfileProps {
   name: string
@@ -34,22 +40,32 @@ const MemberProfile: React.FC<MemberProfileProps> = (props) => {
             <span className="text-muted">Last 1on1 was {calculateDaysAgo(props.last1on1Date)} days ago</span>
           </div>
         </div>
-        <Button variant="outline-primary" className="ml-3">詳細</Button>
+        <Button variant="outline-primary" className="ml-3" onClick={() => pageManager.change(Enum.Personnel)}>詳細</Button>
+        <Button variant="outline-primary" className="ml-3" style={{marginLeft: "15px"}} onClick={() => pageManager.change<EditMemberProps>(Enum.EditMember)}>編集</Button>
       </div>
     </Card>
   )
 }
 
 const Members: React.FC = () => {
-  const memberStatus: MemberProfileProps[] = [
-    {name: "suzuki", last1on1Date: "2022/11/01", assignDate: "2023/08/03"},
-    {name: "tanaka", last1on1Date: "2023/01/01", assignDate: "2023/08/01"},
-  ]
+  const [members, setMembers] = useState<MemberInterface[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const event: LoadMembersEvent = {
+        key: IpcEventKey.LoadMembers,
+        params: null
+      }
+
+      const members: MemberInterface[] = await eventEmitter(event)
+      setMembers(members);
+    })();
+  }, [])
 
   return (
     <Container>
-      { memberStatus.map((m, i) =>
-        (<MemberProfile key={i} name={m.name} assignDate={m.assignDate} last1on1Date={m.last1on1Date} />))
+      { members.map((m, i) =>
+        (<MemberProfile key={i} name={m.account} assignDate={"---"} last1on1Date={"---"} />))
       }
     </Container>
   );
