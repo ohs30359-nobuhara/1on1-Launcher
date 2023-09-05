@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form } from 'react-bootstrap';
 
 export interface PointsDistributionProps {
   maxPoints: number; // 上限ポイントを外部から指定
-  items: string[]; // 割り振れる項目を外部から指定
+  items: Point[]; // 割り振れる項目を外部から指定
   onItemAllocationChange: (allocations: { [key: string]: number }) => void; // 割り振り値を親コンポーネントに渡すコールバック
+}
+
+interface Point {
+  key: string;
+  label: string;
+  value: number;
 }
 
 export const PointsDistributionComponent: React.FC<PointsDistributionProps> = (props) => {
   const initialAllocations: { [key: string]: number } = {};
   props.items.forEach((item) => {
-    initialAllocations[item] = 0; // 初期値を0に設定
+    initialAllocations[item.key] = item.value; // 初期値を0に設定
   });
 
   const [allocations, setAllocations] = useState(initialAllocations);
@@ -36,12 +42,12 @@ export const PointsDistributionComponent: React.FC<PointsDistributionProps> = (p
         <Col md={6}>
           <Form>
             {props.items.map((item) => (
-              <Form.Group key={item} style={{marginBottom: "10px"}}>
-                <Form.Label>{item}</Form.Label>
+              <Form.Group key={item.key} style={{ marginBottom: '10px' }}>
+                <Form.Label>{item.label}</Form.Label>
                 <Form.Control
                   type="number"
-                  value={allocations[item]}
-                  onChange={(event) => handleChange(event as any, item)}
+                  value={allocations[item.key]}
+                  onChange={(event) => handleChange(event as any, item.key)}
                 />
               </Form.Group>
             ))}

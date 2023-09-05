@@ -94,15 +94,22 @@ export const EditMember: React.FC<EditMemberProps> = (props) => {
           <Form.Label>■ スキル評価</Form.Label>
           <PointsDistributionComponent
             maxPoints={10}
-            items={["スキルアップ", "経済的安定性", "ワークライフバランス", "面白さ、やりがい", "社会貢献", "知名度"]}
+            items={[
+              { key: "skillUp", value: member.priority.skillUp, label: "スキルアップ" },
+              { key: "financialStability", value: member.priority.financialStability, label: "経済的安定性" },
+              { key: "workLifeBalance", value: member.priority.workLifeBalance, label: "ワークライフバランス" },
+              { key: "engagementAndFulfillment", value: member.priority.engagementAndFulfillment, label: "面白さ、やりがい" },
+              { key: "socialContribution", value: member.priority.socialContribution, label: "社会貢献" },
+              { key: "popularity", value: member.priority.popularity, label: "知名度" }
+            ]}
             onItemAllocationChange={(allocations) => {
               setMember({ ...member, priority: {
-                  skillUp: allocations["スキルアップ"],
-                  financialStability: allocations["経済的安定性"],
-                  workLifeBalance: allocations["ワークライフバランス"],
-                  engagementAndFulfillment: allocations["面白さ、やりがい"],
-                  socialContribution: allocations["社会貢献"],
-                  popularity: allocations["知名度"],
+                  skillUp: allocations["skillUp"],
+                  financialStability: allocations["financialStability"],
+                  workLifeBalance: allocations["workLifeBalance"],
+                  engagementAndFulfillment: allocations["engagementAndFulfillment"],
+                  socialContribution: allocations["socialContribution"],
+                  popularity: allocations["popularity"],
                 }});
             }}>
           </PointsDistributionComponent>

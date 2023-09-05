@@ -8,7 +8,7 @@ import {pageManager} from "../pageManager";
 import {EditMemberProps} from "./editMember";
 
 interface MemberProfileProps {
-  name: string
+  member: MemberInterface
   assignDate: string
   last1on1Date: string
 }
@@ -27,12 +27,13 @@ const MemberProfile: React.FC<MemberProfileProps> = (props) => {
     return Math.floor(timeDifference / (1000 * 60 * 60 * 24));
   }
 
+  console.log(props.member)
   return (
     <Card className="mb-4">
       <div className="d-flex align-items-start p-3">
         <div className="flex-grow-1">
           <div className="d-flex align-items-center">
-            <h3 className="mb-0 mr-2">{props.name}</h3>
+            <h3 className="mb-0 mr-2">{props.member.account}</h3>
             <span className="text-muted">·</span>
             <span className="text-muted ml-2">assign {props.assignDate}</span>
           </div>
@@ -41,7 +42,7 @@ const MemberProfile: React.FC<MemberProfileProps> = (props) => {
           </div>
         </div>
         <Button variant="outline-primary" className="ml-3" onClick={() => pageManager.change(Enum.Personnel)}>詳細</Button>
-        <Button variant="outline-primary" className="ml-3" style={{marginLeft: "15px"}} onClick={() => pageManager.change<EditMemberProps>(Enum.EditMember)}>編集</Button>
+        <Button variant="outline-primary" className="ml-3" style={{marginLeft: "15px"}} onClick={() => pageManager.change<EditMemberProps>(Enum.EditMember, {member: props.member})}>編集</Button>
       </div>
     </Card>
   )
@@ -65,7 +66,7 @@ const Members: React.FC = () => {
   return (
     <Container>
       { members.map((m, i) =>
-        (<MemberProfile key={i} name={m.account} assignDate={"---"} last1on1Date={"---"} />))
+        (<MemberProfile key={i} member={m} assignDate={"---"} last1on1Date={"---"} />))
       }
     </Container>
   );
