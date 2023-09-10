@@ -116,6 +116,11 @@ export const EditMember: React.FC<EditMemberProps> = (props) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
+          <Form.Label>評価</Form.Label>
+          <Form.Control as="textarea" rows={3}  onChange={(e) => setMember({ ...member, skillAssessment: e.target.value })}/>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
           <Form.Label>■ プライオリティ</Form.Label>
           <SkillForm
             problemSolving={member.skillSet.problemSolving}
@@ -134,8 +139,8 @@ export const EditMember: React.FC<EditMemberProps> = (props) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>■ 見解</Form.Label>
-          <Form.Control as="textarea" rows={3} />
+          <Form.Label>詳細</Form.Label>
+          <Form.Control as="textarea" rows={3}  onChange={(e) => setMember({ ...member, priorityMemo: e.target.value })}/>
         </Form.Group>
 
         <h3 style={headlineCss}>備考</h3>

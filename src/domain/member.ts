@@ -1,6 +1,6 @@
 import {write, read} from "../utils/file";
-import {Skill, SkillInterface} from "./skill";
-import {Priority, PriorityInterface} from "./priority";
+import {SkillInterface} from "./skill";
+import {PriorityInterface} from "./priority";
 
 export interface MemberInterface {
   readonly account: string
@@ -16,8 +16,12 @@ export interface MemberInterface {
   closingTheGap?: string
   // スキル評価
   skillSet?: SkillInterface
+  // スキル評価 (詳細)
+  skillAssessment?: string
   // 価値観
   priority?: PriorityInterface
+  // 価値観についての補足
+  priorityMemo?: string
   // 備考
   remarks?: string
 }
@@ -31,10 +35,12 @@ export class Member implements MemberInterface {
     public growthStrategy?: string, // 育成方針
     public closingTheGap?: string, // ギャップフィル
     public skillSet?: SkillInterface, // スキル評価
+    public skillAssessment?: string, //  スキル評価 (詳細)
     public priority?: PriorityInterface, // 価値観
+    public priorityMemo?: string, // 価値観についての補足
     public remarks?: string, // 備考
 ) {}
-
+  
   public save() {
     // 上書き保存
     const members: {[key: string]: MemberInterface} = Member.getMembers();

@@ -16,6 +16,8 @@ ipcEventListener.addEvent<MemberInterface>(IpcEventKey.SaveMember, (payload) => 
   member.skillSet = payload.params.skillSet;
   member.priority = payload.params.priority;
   member.remarks = payload.params.remarks;
+  member.priorityMemo = payload.params.priorityMemo;
+  member.skillAssessment = payload.params.skillAssessment;
   member.save();
   return true;
 });

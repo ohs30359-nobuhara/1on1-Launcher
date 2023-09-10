@@ -37,28 +37,20 @@ export const PointsDistributionComponent: React.FC<PointsDistributionProps> = (p
   const totalPoints = allocationsArray.reduce((total, value) => total + value, 0);
 
   return (
-    <Container>
-      <Row>
-        <Col md={6}>
-          <Form>
-            {props.items.map((item) => (
-              <Form.Group key={item.key} style={{ marginBottom: '10px' }}>
-                <Form.Label>{item.label}</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={allocations[item.key]}
-                  onChange={(event) => handleChange(event as any, item.key)}
-                />
-              </Form.Group>
-            ))}
-          </Form>
-        </Col>
-        <Col md={6}>
-          <div>
-            <strong>Total Points: {totalPoints}</strong>
-          </div>
-        </Col>
-      </Row>
-    </Container>
+    <div>
+      <strong>Total Points: {totalPoints}</strong>
+      <Form>
+        {props.items.map((item) => (
+          <Form.Group key={item.key} style={{ marginBottom: '10px' }}>
+            <Form.Label>{item.label}</Form.Label>
+            <Form.Control
+              type="number"
+              value={allocations[item.key]}
+              onChange={(event) => handleChange(event as any, item.key)}
+            />
+          </Form.Group>
+        ))}
+      </Form>
+    </div>
   );
 };
