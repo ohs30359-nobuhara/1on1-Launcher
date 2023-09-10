@@ -16,11 +16,11 @@ class PageManager {
 
   constructor() {
     this.pages = new Map();
-    this.changeHandler = () => {};
+    this.changeHandler = () => {console.log("")};
   }
 
 
-  setOption(pages: Array<PageOption>, changeHandler: (page: JSX.Element, props: any) => void): void {
+  setOption(pages: PageOption[], changeHandler: (page: JSX.Element, props: any) => void): void {
     pages.forEach(p => this.pages.set(p.key, p));
     this.changeHandler = changeHandler
   }

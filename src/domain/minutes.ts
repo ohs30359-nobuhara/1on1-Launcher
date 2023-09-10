@@ -37,8 +37,8 @@ export class Minutes implements MinutesInterface {
   /**
    * 議事録一覧を取得 (メンバーとタイトルのみ)
    */
-  static async loadMinutesIndex(): Promise<Array<MinutesIndexInterface>> {
-    const result: Array<MinutesIndexInterface> = [];
+  static async loadMinutesIndex(): Promise<MinutesIndexInterface[]> {
+    const result: MinutesIndexInterface[] = [];
     const members: MemberInterface[] = Member.getMemberArray()
 
     for (const member of members) {
@@ -60,8 +60,8 @@ export class Minutes implements MinutesInterface {
     const body: string = read(`./backlog/${member}/${date}.txt`);
     return {
       account: member,
-      body: body,
-      date: date
+      body,
+      date
     }
   }
 }

@@ -40,7 +40,7 @@ export class Member implements MemberInterface {
     public priorityMemo?: string, // 価値観についての補足
     public remarks?: string, // 備考
 ) {}
-  
+
   public save() {
     // 上書き保存
     const members: {[key: string]: MemberInterface} = Member.getMembers();
@@ -56,9 +56,8 @@ export class Member implements MemberInterface {
     const result: MemberInterface[] = [];
     const members: {[key: string]: MemberInterface} = Member.getMembers();
 
-    for (const key in members) {
-      result.push(members[key]);
-    }
+    Object.keys(members).forEach(key => result.push(members[key]));
+
     return result;
   }
 }
