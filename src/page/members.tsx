@@ -27,7 +27,6 @@ const MemberProfile: React.FC<MemberProfileProps> = (props) => {
     return Math.floor(timeDifference / (1000 * 60 * 60 * 24));
   }
 
-  console.log(props.member)
   return (
     <Card className="mb-4">
       <div className="d-flex align-items-start p-3">
