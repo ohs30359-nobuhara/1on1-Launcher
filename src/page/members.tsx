@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Button, Card, Container} from 'react-bootstrap';
 import {eventEmitter} from "../core/eventEmitter";
 import {LoadMembersEvent} from "../events/loadMembers";
-import {Enum, IpcEventKey} from "../enum";
+import {PageKey, IpcEventKey} from "../enum";
 import {MemberInterface} from "../domain/member";
 import {pageManager} from "../pageManager";
 import {EditMemberProps} from "./editMember";
@@ -40,8 +40,8 @@ const MemberProfile: React.FC<MemberProfileProps> = (props) => {
             <span className="text-muted">Last 1on1 was {calculateDaysAgo(props.last1on1Date)} days ago</span>
           </div>
         </div>
-        <Button variant="outline-primary" className="ml-3" onClick={() => pageManager.change(Enum.Personnel)}>詳細</Button>
-        <Button variant="outline-primary" className="ml-3" style={{marginLeft: "15px"}} onClick={() => pageManager.change<EditMemberProps>(Enum.EditMember, {member: props.member})}>編集</Button>
+        <Button variant="outline-primary" className="ml-3" onClick={() => pageManager.change(PageKey.Personnel)}>詳細</Button>
+        <Button variant="outline-primary" className="ml-3" style={{marginLeft: "15px"}} onClick={() => pageManager.change<EditMemberProps>(PageKey.EditMember, {member: props.member})}>編集</Button>
       </div>
     </Card>
   )

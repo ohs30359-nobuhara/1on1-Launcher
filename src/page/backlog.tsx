@@ -3,7 +3,7 @@ import {Button, Container, Form} from 'react-bootstrap';
 import {AiOutlineDelete, AiOutlineSearch} from 'react-icons/ai';
 import {MemberInterface} from "../domain/member";
 import {LoadMembersEvent} from "../events/loadMembers";
-import {Enum, IpcEventKey} from "../enum";
+import {PageKey, IpcEventKey} from "../enum";
 import {eventEmitter} from "../core/eventEmitter";
 import {LoadMinutesIndexEvent} from "../events/loadMinutesIndex";
 import {MinutesIndexInterface, MinutesInterface} from "../domain/minutes";
@@ -36,7 +36,7 @@ export const BacklogPage: React.FC<BacklogProps> = (props) => {
       params: { date, member }
     }
     const minutes: MinutesInterface = await eventEmitter(event);
-    pageManager.change<MinutesPagePros>(Enum.Minutes, {member: minutes.account, content: minutes.body, date: minutes.date})
+    pageManager.change<MinutesPagePros>(PageKey.Minutes, {member: minutes.account, content: minutes.body, date: minutes.date})
   }
 
   useEffect(() => {

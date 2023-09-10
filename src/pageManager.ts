@@ -1,9 +1,9 @@
 import {JSX} from "react";
-import {Enum} from "./enum";
+import {PageKey} from "./enum";
 
 export interface PageOption {
   component: JSX.Element
-  key: Enum
+  key: PageKey
   menu?: {
     menuIcon: JSX.Element,
     menuTitle: string,
@@ -11,7 +11,7 @@ export interface PageOption {
 }
 
 class PageManager {
-  private pages: Map<Enum, PageOption>
+  private pages: Map<PageKey, PageOption>
   private changeHandler: (page: JSX.Element, props: any) => void
 
   constructor() {
@@ -25,7 +25,7 @@ class PageManager {
     this.changeHandler = changeHandler
   }
 
-  change<T=any>(key: Enum, props?: T): void {
+  change<T=any>(key: PageKey, props?: T): void {
     const op: PageOption | undefined = this.pages.get(key);
 
     if (!op) {

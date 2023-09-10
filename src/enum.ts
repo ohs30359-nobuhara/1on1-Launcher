@@ -1,4 +1,4 @@
-export enum Enum {
+export enum PageKey {
   OneOnOne,
   Backlog,
   Members,
