@@ -1,5 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Button, ButtonToolbar, CloseButton, Col, Container, Form, InputGroup, ListGroup, Row} from 'react-bootstrap';
+import {
+  Button,
+  ButtonToolbar,
+  Card,
+  CloseButton,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  ListGroup,
+  Row
+} from 'react-bootstrap';
 import {BsLightbulb} from "react-icons/bs";
 import {CiStickyNote} from "react-icons/ci";
 import {ContentsModal} from "../component/modal";
@@ -10,6 +21,9 @@ import {eventEmitter} from "../core/eventEmitter";
 import {MemberInterface} from "../domain/member";
 import {LoadMembersEvent} from "../events/loadMembers";
 import {Timer} from "../component/timer";
+import {MinutesIndexInterface, MinutesInterface} from "../domain/minutes";
+import {LoadMinutesIndexEvent} from "../events/loadMinutesIndex";
+import {LoadMinutesEvent} from "../events/loadMinutes";
 
 const OneOnOnePage: React.FC = () => {
   const [member, setMember] = useState<string>('');
@@ -19,6 +33,8 @@ const OneOnOnePage: React.FC = () => {
   const [nextActionsList, setNextActionsList] = useState<string[]>([]);
   const [overtureModalShow, setOvertureModalShow] = React.useState(false);
   const [backlogModalShow, setBacklogModalShow] = React.useState(false);
+  const [backlogs, setBacklogs] = useState<MinutesIndexInterface[]>([]);
+  const [backlog, setBacklog] = useState<string>('');
 
   const handleSave = async () => {
     const payload: SaveMinutesEvent = {
@@ -28,8 +44,9 @@ const OneOnOnePage: React.FC = () => {
       },
       key: IpcEventKey.SaveMinutes
     }
-    const resp: boolean = await eventEmitter<boolean>(payload);
-    console.log(resp);
+    if (await eventEmitter<boolean>(payload)) {
+      alert("保存に成功しました")
+    }
   };
 
   const handleAddNextAction = () => {
@@ -44,8 +61,19 @@ const OneOnOnePage: React.FC = () => {
     setNextActionsList(updatedActions);
   };
 
+  const handleLoadBacklog = async (date) => {
+    const event: LoadMinutesEvent = {
+      key: IpcEventKey.LoadMinutes,
+      params: { member, date }
+    }
+
+    const resp: MinutesInterface = await eventEmitter<MinutesInterface>(event);
+    setBacklog(resp.body);
+  }
+
   useEffect(() => {
     (async () => {
+      // メンバー情報の読み込み
       const event: LoadMembersEvent = {
         key: IpcEventKey.LoadMembers,
         params: null
@@ -55,6 +83,16 @@ const OneOnOnePage: React.FC = () => {
 
       // 変更されないケースを考慮
       setMember(members[0].account);
+
+
+      // バックログ情報の読み込み
+      const loadBacklogEvent: LoadMinutesIndexEvent = {
+        key: IpcEventKey.LoadMinutesIndex,
+        params: null
+      }
+
+      const backlogs: MinutesIndexInterface[] = await eventEmitter(loadBacklogEvent);
+      setBacklogs(backlogs);
     })();
   }, [])
 
@@ -65,7 +103,11 @@ const OneOnOnePage: React.FC = () => {
           <h3>議事録</h3>
           <Form.Control as="select"
                         value={member}
-                        onChange={(e) => { setMember(e.target.value) }}>
+                        onChange={(e) => {
+                          // メンバーを切り替えた際に現在表示している過去ログをクリアする (でないと他人の実施ログが残る)
+                          setMember(e.target.value);
+                          setBacklog("")
+                        }}>
 
             {members.map((option) => (
               <option key={option.account} value={option.account}>
@@ -101,7 +143,7 @@ const OneOnOnePage: React.FC = () => {
       <Row className="mt-5">
         <Col>
           <div className="next-action">
-            <h2>アクションアイテム</h2>
+            <h4>アクションアイテム</h4>
             <Form>
               <InputGroup className="mb-3">
                 <Form.Control
@@ -152,9 +194,22 @@ const OneOnOnePage: React.FC = () => {
       <ContentsModal
         show={backlogModalShow}
         onHide={() => setBacklogModalShow(false)}
-        title={"前回の1on1"}
+        title={"1on1実施ログ"}
       >
-        <div></div>
+        <div>
+          <Form.Select onChange={(e) => handleLoadBacklog(e.target.value)}>
+            {
+              backlogs
+              .filter(log => log.member == member)
+              .map((log => <option>{log.date}</option>))
+            }
+          </Form.Select>
+          <Card style={{marginTop: 30}}>
+            <Card.Body>
+              <Card.Text as="pre">{backlog}</Card.Text>
+            </Card.Body>
+          </Card>
+        </div>
       </ContentsModal>
 
     </Container>
