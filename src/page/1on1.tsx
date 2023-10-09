@@ -22,8 +22,8 @@ import {MemberInterface} from "../domain/member";
 import {LoadMembersEvent} from "../events/loadMembers";
 import {Timer} from "../component/timer";
 import {BacklogIndexInterface, BacklogInterface} from "../domain/backlog";
-import {LoadMinutesIndexEvent} from "../events/loadMinutesIndex";
-import {LoadMinutesEvent} from "../events/loadMinutes";
+import {LoadBacklogIndexEvent} from "../events/loadBacklogIndex";
+import {LoadBacklogEvent} from "../events/loadBacklog";
 
 const OneOnOnePage: React.FC = () => {
   const [member, setMember] = useState<string>('');
@@ -62,7 +62,7 @@ const OneOnOnePage: React.FC = () => {
   };
 
   const handleLoadBacklog = async (date) => {
-    const event: LoadMinutesEvent = {
+    const event: LoadBacklogEvent = {
       key: IpcEventKey.LoadBacklog,
       params: { member, date }
     }
@@ -86,7 +86,7 @@ const OneOnOnePage: React.FC = () => {
 
 
       // バックログ情報の読み込み
-      const loadBacklogEvent: LoadMinutesIndexEvent = {
+      const loadBacklogEvent: LoadBacklogIndexEvent = {
         key: IpcEventKey.LoadBacklogIndex,
         params: null
       }

@@ -7,7 +7,7 @@ interface Body {
   date: string
 }
 
-export interface LoadMinutesEvent extends IpcEventInterface<Body> {
+export interface LoadBacklogEvent extends IpcEventInterface<Body> {
   key: IpcEventKey.LoadBacklog
 }
 

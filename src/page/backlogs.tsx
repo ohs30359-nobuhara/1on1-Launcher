@@ -5,9 +5,9 @@ import {MemberInterface} from "../domain/member";
 import {LoadMembersEvent} from "../events/loadMembers";
 import {PageKey, IpcEventKey} from "../enum";
 import {eventEmitter} from "../core/eventEmitter";
-import {LoadMinutesIndexEvent} from "../events/loadMinutesIndex";
+import {LoadBacklogIndexEvent} from "../events/loadBacklogIndex";
 import {BacklogIndexInterface, BacklogInterface} from "../domain/backlog";
-import {LoadMinutesEvent} from "../events/loadMinutes";
+import {LoadBacklogEvent} from "../events/loadBacklog";
 import {pageManager} from "../pageManager";
 import {MinutesPagePros} from "./minutes";
 
@@ -28,7 +28,7 @@ export const BacklogsPage: React.FC<BacklogsProps> = (props) => {
   };
 
   const handleShow = async (date: string, member: string) => {
-    const event: LoadMinutesEvent = {
+    const event: LoadBacklogEvent = {
       key: IpcEventKey.LoadBacklog,
       params: { date, member }
     }
@@ -45,7 +45,7 @@ export const BacklogsPage: React.FC<BacklogsProps> = (props) => {
       const members: MemberInterface[] = await eventEmitter(event);
       setMembers(members);
 
-      const loadBacklogEvent: LoadMinutesIndexEvent = {
+      const loadBacklogEvent: LoadBacklogIndexEvent = {
         key: IpcEventKey.LoadBacklogIndex,
         params: null
       }
