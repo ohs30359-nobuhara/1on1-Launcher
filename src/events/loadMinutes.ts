@@ -1,6 +1,6 @@
 import {IpcEventInterface, ipcEventListener} from "../core/event";
 import {IpcEventKey} from "../enum";
-import {Minutes} from "../domain/minutes";
+import {Backlog} from "../domain/backlog";
 
 interface Body {
   member: string
@@ -8,9 +8,9 @@ interface Body {
 }
 
 export interface LoadMinutesEvent extends IpcEventInterface<Body> {
-  key: IpcEventKey.LoadMinutes
+  key: IpcEventKey.LoadBacklog
 }
 
-ipcEventListener.addEvent<Body>(IpcEventKey.LoadMinutes, (payload) => {
-  return Minutes.find(payload.params.member, payload.params.date);
+ipcEventListener.addEvent<Body>(IpcEventKey.LoadBacklog, (payload) => {
+  return Backlog.find(payload.params.member, payload.params.date);
 })

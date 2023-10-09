@@ -1,6 +1,6 @@
 import {IpcEventKey} from "../enum";
 import {IpcEventInterface, ipcEventListener} from "../core/event";
-import {Minutes} from "../domain/minutes";
+import {Backlog} from "../domain/backlog";
 
 interface Body {
   account: string
@@ -8,11 +8,11 @@ interface Body {
 }
 
 export interface SaveMinutesEvent extends IpcEventInterface<Body>{
-  key: IpcEventKey.SaveMinutes
+  key: IpcEventKey.SaveBacklog
 }
 
-ipcEventListener.addEvent<Body>(IpcEventKey.SaveMinutes, (payload) => {
-  const minutes: Minutes = Minutes.createTodayMinutes(payload.params.body, payload.params.account)
+ipcEventListener.addEvent<Body>(IpcEventKey.SaveBacklog, (payload) => {
+  const minutes: Backlog = Backlog.createTodayMinutes(payload.params.body, payload.params.account)
   minutes.save();
   return true;
 });

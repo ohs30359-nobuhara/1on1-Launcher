@@ -6,19 +6,19 @@ import {LoadMembersEvent} from "../events/loadMembers";
 import {PageKey, IpcEventKey} from "../enum";
 import {eventEmitter} from "../core/eventEmitter";
 import {LoadMinutesIndexEvent} from "../events/loadMinutesIndex";
-import {MinutesIndexInterface, MinutesInterface} from "../domain/minutes";
+import {BacklogIndexInterface, BacklogInterface} from "../domain/backlog";
 import {LoadMinutesEvent} from "../events/loadMinutes";
 import {pageManager} from "../pageManager";
 import {MinutesPagePros} from "./minutes";
 
-interface BacklogProps {
+interface BacklogsProps {
 }
 
-export const BacklogPage: React.FC<BacklogProps> = (props) => {
+export const BacklogsPage: React.FC<BacklogsProps> = (props) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedMember, setSelectedMember] = useState('');
   const [members, setMembers] = useState<MemberInterface[]>([]);
-  const [backlogs, setBacklogs] = useState<MinutesIndexInterface[]>([]);
+  const [backlogs, setBacklogs] = useState<BacklogIndexInterface[]>([]);
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);
@@ -32,11 +32,11 @@ export const BacklogPage: React.FC<BacklogProps> = (props) => {
 
   const handleShow = async (date: string, member: string) => {
     const event: LoadMinutesEvent = {
-      key: IpcEventKey.LoadMinutes,
+      key: IpcEventKey.LoadBacklog,
       params: { date, member }
     }
-    const minutes: MinutesInterface = await eventEmitter(event);
-    pageManager.change<MinutesPagePros>(PageKey.Minutes, {member: minutes.account, content: minutes.body, date: minutes.date})
+    const minutes: BacklogInterface = await eventEmitter(event);
+    pageManager.change<MinutesPagePros>(PageKey.Backlogs, {member: minutes.account, content: minutes.body, date: minutes.date})
   }
 
   useEffect(() => {
@@ -50,11 +50,11 @@ export const BacklogPage: React.FC<BacklogProps> = (props) => {
 
 
       const loadBacklogEvent: LoadMinutesIndexEvent = {
-        key: IpcEventKey.LoadMinutesIndex,
+        key: IpcEventKey.LoadBacklogIndex,
         params: null
       }
 
-      const backlogs: MinutesIndexInterface[] = await eventEmitter(loadBacklogEvent);
+      const backlogs: BacklogIndexInterface[] = await eventEmitter(loadBacklogEvent);
       setBacklogs(backlogs);
     })();
   }, [])

@@ -3,7 +3,7 @@ import React from "react";
 import {MainTemplate} from "./template/main";
 import OneOnOnePage from "./page/1on1";
 import Members from "./page/members";
-import {BacklogPage} from "./page/backlog";
+import {BacklogsPage} from "./page/backlogs";
 import {PageOption} from "./pageManager";
 import {PageKey} from "./enum";
 import {RiTeamLine} from 'react-icons/ri';
@@ -33,7 +33,7 @@ const pages: PageOption[] = [
     }
   },
   {
-    component: (<BacklogPage/>),
+    component: (<BacklogsPage/>),
     key: PageKey.Backlog,
     menu: {
       menuIcon: (<TbNotes className="menu-icon" />),
@@ -50,7 +50,7 @@ const pages: PageOption[] = [
   },
   {
     component: (<MinutesPage/>),
-    key: PageKey.Minutes,
+    key: PageKey.Backlogs,
   },
   {
     component: (<Personnel/>),

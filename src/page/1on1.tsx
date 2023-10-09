@@ -21,7 +21,7 @@ import {eventEmitter} from "../core/eventEmitter";
 import {MemberInterface} from "../domain/member";
 import {LoadMembersEvent} from "../events/loadMembers";
 import {Timer} from "../component/timer";
-import {MinutesIndexInterface, MinutesInterface} from "../domain/minutes";
+import {BacklogIndexInterface, BacklogInterface} from "../domain/backlog";
 import {LoadMinutesIndexEvent} from "../events/loadMinutesIndex";
 import {LoadMinutesEvent} from "../events/loadMinutes";
 
@@ -33,7 +33,7 @@ const OneOnOnePage: React.FC = () => {
   const [nextActionsList, setNextActionsList] = useState<string[]>([]);
   const [overtureModalShow, setOvertureModalShow] = React.useState(false);
   const [backlogModalShow, setBacklogModalShow] = React.useState(false);
-  const [backlogs, setBacklogs] = useState<MinutesIndexInterface[]>([]);
+  const [backlogs, setBacklogs] = useState<BacklogIndexInterface[]>([]);
   const [backlog, setBacklog] = useState<string>('');
 
   const handleSave = async () => {
@@ -42,7 +42,7 @@ const OneOnOnePage: React.FC = () => {
         body: currentMeeting,
         account: member
       },
-      key: IpcEventKey.SaveMinutes
+      key: IpcEventKey.SaveBacklog
     }
     if (await eventEmitter<boolean>(payload)) {
       alert("保存に成功しました")
@@ -63,11 +63,11 @@ const OneOnOnePage: React.FC = () => {
 
   const handleLoadBacklog = async (date) => {
     const event: LoadMinutesEvent = {
-      key: IpcEventKey.LoadMinutes,
+      key: IpcEventKey.LoadBacklog,
       params: { member, date }
     }
 
-    const resp: MinutesInterface = await eventEmitter<MinutesInterface>(event);
+    const resp: BacklogInterface = await eventEmitter<BacklogInterface>(event);
     setBacklog(resp.body);
   }
 
@@ -87,11 +87,11 @@ const OneOnOnePage: React.FC = () => {
 
       // バックログ情報の読み込み
       const loadBacklogEvent: LoadMinutesIndexEvent = {
-        key: IpcEventKey.LoadMinutesIndex,
+        key: IpcEventKey.LoadBacklogIndex,
         params: null
       }
 
-      const backlogs: MinutesIndexInterface[] = await eventEmitter(loadBacklogEvent);
+      const backlogs: BacklogIndexInterface[] = await eventEmitter(loadBacklogEvent);
       setBacklogs(backlogs);
     })();
   }, [])

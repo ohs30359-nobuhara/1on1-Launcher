@@ -3,14 +3,14 @@ export enum PageKey {
   Backlog,
   Members,
   EditMember,
-  Minutes,
+  Backlogs,
   Personnel
 }
 
 export enum IpcEventKey {
-  LoadMinutesIndex= "LoadMinutesIndex",
-  LoadMinutes= "LoadMinutes",
-  SaveMinutes = "SaveMinutes",
+  LoadBacklogIndex= "LoadBacklogIndex",
+  LoadBacklog= "LoadBacklog",
+  SaveBacklog = "SaveBacklog",
   LoadMembers= "LoadMembers",
   SaveMember = "SaveMember"
 }

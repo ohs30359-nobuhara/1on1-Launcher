@@ -2,18 +2,18 @@ import {getFilesInDirectory, read, write} from "../utils/file";
 import {formatDate} from "../utils/dateformat";
 import {Member, MemberInterface} from "./member";
 
-export interface MinutesInterface {
+export interface BacklogInterface {
   readonly date: string
   readonly body: string
   readonly account: string
 }
 
-export interface MinutesIndexInterface {
+export interface BacklogIndexInterface {
   readonly date: string
   readonly member: string
 }
 
-export class Minutes implements MinutesInterface {
+export class Backlog implements BacklogInterface {
   constructor(readonly date: string, readonly body: string, readonly account: string) {
   }
 
@@ -31,14 +31,14 @@ export class Minutes implements MinutesInterface {
   static createTodayMinutes(body: string, account: string) {
     const dtStr: string = formatDate(new Date(), "YYYY-MM-DD")
 
-    return new Minutes(dtStr, body, account)
+    return new Backlog(dtStr, body, account)
   }
 
   /**
    * 議事録一覧を取得 (メンバーとタイトルのみ)
    */
-  static async loadMinutesIndex(): Promise<MinutesIndexInterface[]> {
-    const result: MinutesIndexInterface[] = [];
+  static async loadMinutesIndex(): Promise<BacklogIndexInterface[]> {
+    const result: BacklogIndexInterface[] = [];
     const members: MemberInterface[] = Member.getMemberArray()
 
     for (const member of members) {
@@ -56,7 +56,7 @@ export class Minutes implements MinutesInterface {
    * @param member
    * @param date
    */
-  static async find(member: string, date: string): Promise<MinutesInterface> {
+  static async find(member: string, date: string): Promise<BacklogInterface> {
     const body: string = read(`./backlog/${member}/${date}.txt`);
     return {
       account: member,

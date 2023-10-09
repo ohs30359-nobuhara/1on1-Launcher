@@ -1,11 +1,11 @@
 import {IpcEventInterface, ipcEventListener} from "../core/event";
 import {IpcEventKey} from "../enum";
-import {Minutes} from "../domain/minutes";
+import {Backlog} from "../domain/backlog";
 
 export interface LoadMinutesIndexEvent extends IpcEventInterface<null> {
-  key: IpcEventKey.LoadMinutesIndex
+  key: IpcEventKey.LoadBacklogIndex
 }
 
-ipcEventListener.addEvent(IpcEventKey.LoadMinutesIndex, () => {
-  return Minutes.loadMinutesIndex();
+ipcEventListener.addEvent(IpcEventKey.LoadBacklogIndex, () => {
+  return Backlog.loadMinutesIndex();
 })
