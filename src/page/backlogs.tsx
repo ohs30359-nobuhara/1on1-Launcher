@@ -15,19 +15,16 @@ interface BacklogsProps {
 }
 
 export const BacklogsPage: React.FC<BacklogsProps> = (props) => {
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedMember, setSelectedMember] = useState('');
   const [members, setMembers] = useState<MemberInterface[]>([]);
   const [backlogs, setBacklogs] = useState<BacklogIndexInterface[]>([]);
+  const [cacheBacklogs, setCacheBacklogs] = useState<BacklogIndexInterface[]>([]);
 
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(event.target.value);
-  };
-
-  const handleSearch = () => {
+  const handleSearch = async (member: string) => {
     // 検索ボタンが押されたときの処理
-    console.log('Selected Date:', selectedDate);
-    console.log('Selected Option:', selectedMember);
+    if (member.length === 0) {
+      setBacklogs(cacheBacklogs);
+    }
+    setBacklogs(cacheBacklogs.filter(log => log.member === member));
   };
 
   const handleShow = async (date: string, member: string) => {
@@ -48,44 +45,31 @@ export const BacklogsPage: React.FC<BacklogsProps> = (props) => {
       const members: MemberInterface[] = await eventEmitter(event);
       setMembers(members);
 
-
       const loadBacklogEvent: LoadMinutesIndexEvent = {
         key: IpcEventKey.LoadBacklogIndex,
         params: null
       }
-
       const backlogs: BacklogIndexInterface[] = await eventEmitter(loadBacklogEvent);
       setBacklogs(backlogs);
+      setCacheBacklogs(backlogs);
     })();
   }, [])
 
   return (
     <Container className={"mt-3"}>
       <div className="card mt-4" style={{padding: 20}}>
-        <div className="d-flex align-items-center" style={{padding: 20}}>
-          <div className="mr-3">
-            <Form.Control
-              type="date"
-              value={selectedDate}
-              onChange={handleDateChange}
-            />
-          </div>
-          <div className="mr-3">
-            <Form.Control as="select"
-                          value={selectedMember}
-                          onChange={(e) => { setSelectedMember(e.target.value) }}>
-              <option value="">選択してください</option>
-              {
-                members.map(member => {
-                  return (
-                    <option value={member.account}>{member.account}</option>
-                  )
-                })
-              }
-            </Form.Control>
-          </div>
-          <Button variant="primary" size="sm" onClick={handleSearch}>検索</Button>
-        </div>
+        <Form>
+          <Form.Control as="select"
+                        onChange={(e) => handleSearch(e.target.value) }>
+            <option value="">選択してください</option>
+            {
+              members.map(member => {
+                return <option value={member.account}>{member.account}</option>
+              })
+            }
+          </Form.Control>
+        </Form>
+
         <table className="table">
           <thead>
           <tr>
